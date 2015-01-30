@@ -41,7 +41,44 @@ void example_1(void)
 
 }
 
+class P
+{
+public:
+	P(int a, int b) {
+		std::cout << "in the simple constructor of P ";
+		std::cout << endl;
+	}
+	explicit P(int a, int b, int c) {
+		std::cout << "explicit list initializer constructor of P ";
+		std::cout << endl;
+	}
+};
+
+void example_2()
+{
+	P x(77, 5); // OK
+	P y{ 77, 5 }; // OK
+	P z{ 77, 5, 42 }; // OK
+	P v = { 77, 5 }; // OK (implicit type conversion allowed)
+	//P w = { 77, 5, 42 }; // ERROR due to explicit (no implicit type conversion allowed)
+}
+
+void fp(const P&)
+{
+	std::cout << "in void fp(const P&)" << endl;
+}
+
+void example_3()
+{
+	fp({ 47, 11 }); // OK, implicit conversion of {47,11} into P
+	//fp({ 47, 11, 3 }); // ERROR due to explicit
+	fp(P{ 47, 11 }); // OK, explicit conversion of {47,11} into P
+	fp(P{ 47, 11, 3 }); // OK, explicit conversion of {47,11,3} into P
+}
+
 int main()
 {
-	example_1();
+	//example_1();
+	//example_2();
+	example_3();
 }
